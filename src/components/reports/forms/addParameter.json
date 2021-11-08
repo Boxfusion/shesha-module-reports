@@ -1,0 +1,130 @@
+{
+  "components": [
+    {
+      "id": "89ddd076-9550-4a48-ae9c-0d7abb88aad8",
+      "type": "textField",
+      "name": "internalName",
+      "label": "Internal Name",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": { "required": true },
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "1c10d7f6-ae05-424f-b5a8-7205b1b959f3",
+      "type": "dropdown",
+      "name": "type.itemValue",
+      "label": "Type",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": { "required": true },
+      "dataSourceType": "referenceList",
+      "referenceListNamespace": "Shesha.Reporting",
+      "referenceListName": "DataType",
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "0cf15344-5083-45c8-808b-ca323030d2c7",
+      "type": "textField",
+      "name": "displayName",
+      "label": "Display Name",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": { "required": true },
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "beca7e44-38d9-4f44-9e3a-b18dfbaefc3f",
+      "type": "textField",
+      "name": "description",
+      "label": "Description",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": { "required": false },
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "bfb847cd-0fa2-4f6d-b4a2-74a8185bc53a",
+      "type": "checkbox",
+      "name": "hideParameter",
+      "label": "Hide Parameter?",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "9b6ddf61-e5b2-4646-b36e-2c82543f5568",
+      "type": "textField",
+      "name": "parameterValue",
+      "label": "Parameter Value",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "d8f79c14-5b04-48a3-97a8-ff525765cb17",
+      "type": "numberField",
+      "name": "parameterOrderIndex",
+      "label": "Parameter Oder Index",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": null,
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "b0141a3f-fe91-4b1f-9b5c-dc3a8aafb47a",
+      "type": "autocomplete",
+      "name": "entityTypeShortAlias",
+      "label": "Entity Type Short Alias",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": "return data?.type?.itemValue === 10;",
+      "dataSourceType": "url",
+      "validate": {},
+      "dataSourceUrl": "/api/services/app/Metadata/EntityTypeAutocomplete",
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "bf9e67a9-64bd-4bc1-9e72-dfd6fcd198ca",
+      "type": "textField",
+      "name": "referenceListName",
+      "label": "Reference List",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": "return data?.type?.itemValue === 8;",
+      "validate": {},
+      "settingsValidationErrors": []
+    },
+    {
+      "id": "275c4700-52c3-408c-8959-7939b00f3316",
+      "type": "textField",
+      "name": "referenceListNamespace",
+      "label": "Reference List Namespace",
+      "labelAlign": "right",
+      "parentId": "root",
+      "hidden": false,
+      "customVisibility": "return data?.type?.itemValue === 8;",
+      "validate": {},
+      "settingsValidationErrors": []
+    }
+  ],
+  "formSettings": { "layout": "horizontal", "colon": true, "labelCol": { "span": 5 }, "wrapperCol": { "span": 13 } }
+}
