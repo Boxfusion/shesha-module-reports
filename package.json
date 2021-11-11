@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://boxfusion@dev.azure.com/boxfusion/shesha-reactjs-reports/_git/shesha-reactjs-reports"
   },
-  "homepage": "https://github.com/Boxfusion/-shesha-reports",
+  "homepage": "https://github.com/Boxfusion/-shesha-module-reports",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
