@@ -6,7 +6,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://boxfusion@dev.azure.com/boxfusion/shesha-reactjs-reports/_git/shesha-reactjs-reports"
+    "url": "https://boxfusion@dev.azure.com/boxfusion/shesha-module-reports/_git/shesha-module-reports"
   },
   "homepage": "https://github.com/Boxfusion/-shesha-module-reports",
   "main": "dist/index.js",
