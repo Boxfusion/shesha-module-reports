@@ -19,6 +19,9 @@
     "node": ">=14",
     "npm": ">=6"
   },
+  "publishConfig": {
+    "registry":"https://registry.npmjs.org/"
+  },
   "scripts": {
     "start": "NODE_ENV=development BABEL_ENV=development styleguidist server --open",
     "styleguide:build": "NODE_ENV=production BABEL_ENV=production styleguidist build",
