@@ -1,6 +1,5 @@
 {
   "name": "@shesha/module-reports",
-  "version": "0.0.1",
   "description": "Reporting module for Shesha React JS",
   "author": "Kai Hotz",
   "license": "MIT",
