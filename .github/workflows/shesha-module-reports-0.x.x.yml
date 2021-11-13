@@ -6,6 +6,7 @@ on:
 
 env:
   NODE_VERSION: '14.x'
+  NPMJS_API_KEY: ${{ secrets.NPMJS_API_KEY }}
 
 jobs:
 
@@ -57,8 +58,8 @@ jobs:
           name: ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
       # publish shesha-module-reports to npmjs
-      - name: Publish shesha-module-reports
+      - name: Publish shesha-module-reports to npmjs
         uses: JS-DevTools/npm-publish@v1
         with:
-          token: ${{ secrets.NPMJS_API_KEY }}
+          token: ${{ env.NPMJS_API_KEY }}
           registry: https://registry.npmjs.org/
