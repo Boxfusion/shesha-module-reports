@@ -58,4 +58,4 @@ jobs:
           body: ${{ steps.tag_version.outputs.changelog }}
       # publish shesha-module-reports to npmjs
       - name: Publish shesha-module-reports to npmjs
-        run: npm publish --access public
+        run: npm publish
