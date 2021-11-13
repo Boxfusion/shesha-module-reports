@@ -62,7 +62,6 @@ jobs:
         with:
           publish_command: "npm publish"
           create_tag: "false"
-          commit_pattern: "^(\\S+)"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_AUTH_TOKEN: ${{ secrets.NPMJS_API_KEY }}
