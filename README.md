@@ -1,5 +1,7 @@
 ## Shesha Module Boilerplate
 
+[![shesha-module-reports-0.x.x](https://github.com/Boxfusion/shesha-module-reports/actions/workflows/shesha-module-reports-0.x.x.yml/badge.svg)](https://github.com/Boxfusion/shesha-module-reports/actions/workflows/shesha-module-reports-0.x.x.yml)
+
 # Getting started
 
 #### Familiar with Git?
