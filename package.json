@@ -1,6 +1,7 @@
 {
   "name": "@shesha/module-reports",
   "description": "Reporting module for Shesha React JS",
+  "author": "Boxfusion",
   "license": "MIT",
   "repository": {
     "type": "git",
