@@ -5,9 +5,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://boxfusion@dev.azure.com/boxfusion/shesha-module-reports/_git/shesha-module-reports"
+    "url": "https://github.com/Boxfusion/shesha-module-reports"
   },
-  "homepage": "https://github.com/Boxfusion/-shesha-module-reports",
+  "homepage": "https://github.com/Boxfusion/shesha-module-reports",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "jsnext:main": "dist/index.es.js",
