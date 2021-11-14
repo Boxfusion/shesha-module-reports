@@ -5,7 +5,7 @@ import { CollapsiblePanel, MainLayout, SectionSeparator, ShaSpin, useUi, Validat
 import { nanoid } from 'nanoid';
 import { ReportingReportDto, useReportingReportGetAll } from 'apis/reportingReport';
 
-interface IReportsDefinitionsPageProps {
+export interface IReportsDefinitionsPageProps {
   reportViewerPageUrl?: string;
 }
 
@@ -58,7 +58,15 @@ export const ReportsDefinitionsPage: FC<IReportsDefinitionsPageProps> = ({
                       renderItem={({ id, displayName, description }: any) => (
                         <List.Item key={nanoid()}>
                           <Tooltip placement="right" title={description}>
-                            <a href={`${reportViewerPageUrl}?id=${id}`}>{displayName}</a>
+                            <a
+                              href={
+                                reportViewerPageUrl?.includes('?')
+                                  ? `${reportViewerPageUrl}&id=${id}`
+                                  : `${reportViewerPageUrl}?id=${id}`
+                              }
+                            >
+                              {displayName}
+                            </a>
                           </Tooltip>
                         </List.Item>
                       )}

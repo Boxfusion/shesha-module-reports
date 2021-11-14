@@ -1,16 +1,12 @@
 import React, { FC, PropsWithChildren } from 'react';
-import { ShaApplicationProvider, SidebarMenuDefaultsProvider, MainLayout } from 'shesha-reactjs';
+import { ShaApplicationProvider, SidebarMenuDefaultsProvider } from 'shesha-reactjs';
 import AuthContainer from 'components/authedContainer';
-
-const backendUrl = process.env.STORYBOOK_BASE_URL || ''; // TODO: Make this configurable
 
 export const StoryApp: FC<PropsWithChildren<any>> = ({ children }) => {
   return (
-    <ShaApplicationProvider backendUrl={backendUrl}>
+    <ShaApplicationProvider backendUrl={process.env.STORYBOOK_BASE_URL || ''}>
       <AuthContainer layout>
-        <SidebarMenuDefaultsProvider items={[]}>
-          <MainLayout title="Any title">{children}</MainLayout>
-        </SidebarMenuDefaultsProvider>
+        <SidebarMenuDefaultsProvider items={[]}>{children}</SidebarMenuDefaultsProvider>
       </AuthContainer>
     </ShaApplicationProvider>
   );
