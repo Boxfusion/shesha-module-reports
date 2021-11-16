@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useMemo, useRef } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
+import 'devexpress-reporting/dx-reportdesigner';
 import ko from 'knockout';
 import { IndexToolbar, MainLayout, useShaRouting, useSheshaApplication } from 'shesha-reactjs';
 
@@ -13,9 +14,11 @@ export const ReportDesignerPage: FC<IReportDesignerPageProps> = () => {
   const designer = useRef<HTMLDivElement>(null);
   const { push, query } = router;
 
+  console.log('ko: ', ko);
+
   const id = query?.id?.toString();
 
-  const reportUrl = ko.observable(id);
+  const reportUrl = ko?.observable(id);
 
   const requestOptions = useMemo(() => {
     return {

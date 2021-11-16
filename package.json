@@ -166,6 +166,7 @@
     "classnames": "^2.3.1",
     "devexpress-reporting": "^20.2.4",
     "devextreme": "^20.2.4",
+    "fast-deep-equal": "^3.1.3",
     "file-saver": "^2.0.5",
     "knockout": "^3.5.1",
     "nanoid": "^3.1.30",

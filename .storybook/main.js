@@ -18,6 +18,7 @@ module.exports = {
             'apis': './src/apis',
             'components': './src/components',
             'styles': './src/styles',
+            'hooks': './src/hooks',
           },
         },
       ],

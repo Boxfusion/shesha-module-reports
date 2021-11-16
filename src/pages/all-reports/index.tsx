@@ -10,7 +10,6 @@ import { Modal } from 'antd';
 import React, { FC, useRef, useState } from 'react';
 import { GenericCreateModal, IShaDataTableProps, IToolbarItem, SimpleIndexPage } from 'shesha-reactjs';
 import { useReportingReportCreate, useReportingReportDelete } from 'apis/reportingReport';
-// import { DataTableFullInstance } from 'shesha-reactjs/dist/providers/dataTable/contexts';
 
 export interface IReportingReportProps {
   /**

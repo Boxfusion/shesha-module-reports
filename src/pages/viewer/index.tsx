@@ -1,21 +1,29 @@
 import React, { FC, useEffect } from 'react';
 import { IndexToolbar, MainLayout, useShaRouting } from 'shesha-reactjs';
 import { CloseOutlined } from '@ant-design/icons';
-import { useReportingReportGet } from '../../apis/reportingReport';
-import { ReportViewerPartial } from '../../components/reports/components/report-viewer';
+import { usePrevious } from 'react-use';
+import { useQueryParams } from 'hooks';
+import { useReportingReportGet } from 'apis/reportingReport';
+import { ReportViewerPartial } from 'components/reports/components/report-viewer';
 
-export interface IReportViewerPageProps {}
+export interface IReportViewerPageProps {
+  id?: string;
+}
 
-export const ReportViewerPage: FC<IReportViewerPageProps> = () => {
+export const ReportViewerPage: FC<IReportViewerPageProps> = ({ id: idParam }) => {
   const { router } = useShaRouting();
 
-  const id = router?.query?.id?.toString();
+  const id: string = router?.query?.id?.toString() || idParam;
 
   const { refetch, data } = useReportingReportGet({ queryParams: { id } });
 
+  const prevId = usePrevious(id);
+
   useEffect(() => {
-    refetch();
-  }, [id, refetch]);
+    if (id && prevId !== id) {
+      refetch();
+    }
+  }, [id, refetch, prevId]);
 
   const displayName = data?.result?.displayName;
 
@@ -36,7 +44,7 @@ export const ReportViewerPage: FC<IReportViewerPageProps> = () => {
       }
     >
       <div className="sha-report-viewer-page">
-        <ReportViewerPartial id={id} />
+        {typeof window !== undefined && id ? <ReportViewerPartial id={id} /> : null}
       </div>
     </MainLayout>
   );

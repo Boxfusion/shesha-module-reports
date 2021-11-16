@@ -1,11 +1,10 @@
 import React, { FC } from 'react';
 import { Button, Checkbox, DatePicker, Form, Input, InputNumber, TimePicker } from 'antd';
-import { nanoid } from 'nanoid';
 import moment, { isMoment } from 'moment';
 import { Store } from 'antd/lib/form/interface';
 import { orderBy } from 'lodash';
 import { EntityDropdown, RefListDropDown, useUi, IAnyObject } from 'shesha-reactjs';
-import { ReportingReportParameterDto } from '../../../../../apis/reportingReport';
+import { ReportingReportParameterDto } from 'apis/reportingReport';
 
 enum FilterDataTypes {
   String = 'string',
@@ -91,6 +90,8 @@ export const ParametersFilter: FC<IParametersFilterProps> = ({ onApply, onCancel
   };
 
   const onFinish = (store: Store) => {
+    console.log('onFinish');
+
     const response: IAnyObject = {};
 
     Object.keys(store).forEach((key: string) => {
@@ -123,15 +124,13 @@ export const ParametersFilter: FC<IParametersFilterProps> = ({ onApply, onCancel
     form.resetFields();
   };
 
-  // const
-
   return (
     <div className="parameter-filters">
       <Form {...formItemLayout} form={form} onFinish={onFinish}>
         {orderBy(parameters, ['parameterOrderIndex'])
           ?.filter(({ hideParameter }) => !hideParameter)
           .map((parameter) => (
-            <Form.Item label={parameter?.displayName} key={nanoid()} name={parameter.internalName as string}>
+            <Form.Item label={parameter?.displayName} key={parameter?.id} name={parameter.internalName as string}>
               {renderParamter(parameter)}
             </Form.Item>
           ))}

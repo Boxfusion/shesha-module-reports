@@ -21,18 +21,14 @@ import {
   IDataTableInstance,
   useShaRouting,
 } from 'shesha-reactjs';
-import {
-  ReportingReportDto,
-  ReportingReportParameterDto,
-  useReportingReportGet,
-} from '../../apis/reportingReport';
+import { ReportingReportDto, ReportingReportParameterDto, useReportingReportGet } from 'apis/reportingReport';
 import {
   useReportingReportParameterCreate,
   useReportingReportParameterGet,
   useReportingReportParameterUpdate,
-} from '../../apis/reportingReportParameter';
+} from 'apis/reportingReportParameter';
 
-interface IReportingReportDetailsProps {
+export interface IReportingReportDetailsProps {
   /**
    * Report index page url
    *
@@ -66,7 +62,7 @@ const customTheme = {
   attributeValueColor: '#2ECC40',
 };
 
-const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
+export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
   reportPageUrl = '/reports',
   reportEditPageUrl = '/reports/edit',
 }) => {

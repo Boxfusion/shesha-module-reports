@@ -47,7 +47,7 @@ export const ReportsDefinitionsPage: FC<IReportsDefinitionsPageProps> = ({
                 {item.map(({ name, reports }, i) => (
                   <Col span={12} id={`col_${i}_row_${index}`} key={nanoid()}>
                     <List
-                      key={nanoid()}
+                      key={`col_row_${name}`}
                       header={
                         <h2>
                           <SectionSeparator sectionName={name} />

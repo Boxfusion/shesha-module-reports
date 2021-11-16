@@ -1,18 +1,20 @@
 import React, { FC } from 'react';
 import { GenericEditPage, useShaRouting } from 'shesha-reactjs';
-import { useReportingReportGet, useReportingReportUpdate } from '../../apis/reportingReport';
+import { useReportingReportGet, useReportingReportUpdate } from 'apis/reportingReport';
 
-export interface IEditReportPageProps {}
+export interface IEditReportPageProps {
+  id?: string;
+}
 
-export const EditReportPage: FC<IEditReportPageProps> = () => {
+export const EditReportPage: FC<IEditReportPageProps> = ({ id }) => {
   const { router } = useShaRouting();
 
-  const id = router?.query?.id?.toString();
+  const reportId = id || router?.query?.id?.toString();
 
   return (
     <GenericEditPage
       title={() => 'Edit Report Details'}
-      id={id}
+      id={reportId}
       fetcher={useReportingReportGet}
       updater={useReportingReportUpdate}
     />
