@@ -1,7 +1,15 @@
 import { Col, List, Row, Tooltip } from 'antd';
 import _ from 'lodash';
 import React, { FC, useEffect } from 'react';
-import { CollapsiblePanel, MainLayout, SectionSeparator, ShaSpin, useUi, ValidationErrors } from '@shesha/reactjs';
+import {
+  CollapsiblePanel,
+  MainLayout,
+  SectionSeparator,
+  ShaSpin,
+  useShaRouting,
+  useUi,
+  ValidationErrors,
+} from '@shesha/reactjs';
 import { nanoid } from 'nanoid';
 import { ReportingReportDto, useReportingReportGetAll } from 'apis/reportingReport';
 
@@ -13,6 +21,7 @@ export const ReportsDefinitionsPage: FC<IReportsDefinitionsPageProps> = ({
   reportViewerPageUrl = '/reports/viewer',
 }) => {
   const { gutter } = useUi();
+  const { router } = useShaRouting();
 
   const { refetch, data, loading, error } = useReportingReportGetAll({ lazy: true });
 
@@ -34,6 +43,21 @@ export const ReportsDefinitionsPage: FC<IReportsDefinitionsPageProps> = ({
       .value(),
     2,
   );
+
+  const getRedirectUrl = (reportId: string) =>
+    reportViewerPageUrl?.includes('?')
+      ? `${reportViewerPageUrl}&id=${reportId}`
+      : `${reportViewerPageUrl}?id=${reportId}`;
+
+  const redirectToReportViewerPage = (reportId: string) => {
+    const url = getRedirectUrl(reportId);
+
+    if (router?.push) {
+      router?.push(url);
+    } else {
+      window.location.assign(url);
+    }
+  };
 
   return (
     <MainLayout title="Reports">
@@ -59,11 +83,11 @@ export const ReportsDefinitionsPage: FC<IReportsDefinitionsPageProps> = ({
                         <List.Item key={nanoid()}>
                           <Tooltip placement="right" title={description}>
                             <a
-                              href={
-                                reportViewerPageUrl?.includes('?')
-                                  ? `${reportViewerPageUrl}&id=${id}`
-                                  : `${reportViewerPageUrl}?id=${id}`
-                              }
+                              href={getRedirectUrl(id)}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                redirectToReportViewerPage(id);
+                              }}
                             >
                               {displayName}
                             </a>
