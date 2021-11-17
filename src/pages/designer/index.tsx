@@ -2,7 +2,7 @@ import React, { FC, useEffect, useMemo, useRef } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import 'devexpress-reporting/dx-reportdesigner';
 import ko from 'knockout';
-import { IndexToolbar, MainLayout, useShaRouting, useSheshaApplication } from '@shesha/reactjs';
+import { IndexToolbar, MainLayout, ShaSpin, useShaRouting, useSheshaApplication } from '@shesha/reactjs';
 import { useWindow } from 'hooks';
 
 const PATH = 'api/ReportDesigner/GetReportDesignerModel';
@@ -71,9 +71,11 @@ export const ReportDesignerPage: FC<IReportDesignerPageProps> = ({ id: url }) =>
         />
       }
     >
-      <div style={{ width: '100%', height: '1000px' }}>
-        {window ? <div ref={designer} data-bind="dxReportDesigner: $data" /> : null}
-      </div>
+      <ShaSpin spinning={!window}>
+        <div style={{ width: '100%', height: '1000px' }}>
+          {window ? <div ref={designer} data-bind="dxReportDesigner: $data" /> : null}
+        </div>
+      </ShaSpin>
     </MainLayout>
   );
 };
