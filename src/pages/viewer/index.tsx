@@ -3,7 +3,7 @@ import { IndexToolbar, MainLayout, useShaRouting } from '@shesha/reactjs';
 import { CloseOutlined } from '@ant-design/icons';
 import { usePrevious } from 'react-use';
 import { useQueryParams } from 'hooks';
-import { useReportingReportGet } from 'apis/reportingReport';
+import { useReportingReportGet, useReportingReportGetParameters } from 'apis/reportingReport';
 import { ReportViewerPartial } from 'components/reports/components/report-viewer';
 
 export interface IReportViewerPageProps {
@@ -15,21 +15,35 @@ export const ReportViewerPage: FC<IReportViewerPageProps> = ({ id: idParam }) =>
 
   const id: string = idParam || router?.query?.id?.toString() || '';
 
-  const { refetch, data } = useReportingReportGet({ queryParams: { id } });
+  const { refetch, data: reportResponse, loading: isFetchingReport } = useReportingReportGet({ queryParams: { id } });
+  const { refetch: fetchFetchReportParameters, data: reportParametersResponse } = useReportingReportGetParameters({
+    queryParams: { reportId: id },
+    lazy: true,
+  });
 
   const prevId = usePrevious(id);
 
+  // When the id changes, fetch the report
   useEffect(() => {
     if (id && prevId !== id) {
       refetch();
     }
   }, [id, refetch, prevId]);
 
-  const displayName = data?.result?.displayName;
+  // When the done fetching the report, fetch the parameters
+  useEffect(() => {
+    if (!isFetchingReport && reportResponse) {
+      fetchFetchReportParameters();
+    }
+  }, [isFetchingReport, reportResponse, fetchFetchReportParameters]);
+
+  const displayName = reportResponse?.result?.displayName;
+
+  const showDesigner = typeof window !== undefined && !!id && reportResponse?.success;
 
   return (
     <MainLayout
-      title={displayName ? `${data?.result?.category?.item} : ${displayName}` : 'Report Viewer'}
+      title={displayName ? `${reportResponse?.result?.category?.item} : ${displayName}` : 'Report Viewer'}
       description="This is the Report View Page"
       toolbar={
         <IndexToolbar
@@ -44,7 +58,7 @@ export const ReportViewerPage: FC<IReportViewerPageProps> = ({ id: idParam }) =>
       }
     >
       <div className="sha-report-viewer-page">
-        {typeof window !== undefined && id ? <ReportViewerPartial id={id} /> : null}
+        {showDesigner ? <ReportViewerPartial id={id} parameters={reportParametersResponse?.result || []} /> : null}
       </div>
     </MainLayout>
   );

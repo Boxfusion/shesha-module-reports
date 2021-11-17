@@ -1,39 +1,32 @@
 /* eslint-disable import/no-duplicates */
 import ko from 'knockout';
-import React, { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { AsyncExportApproach, JSReportViewer, PreviewElements } from 'devexpress-reporting/dx-webdocumentviewer';
 import { Button, Drawer } from 'antd';
 import { FilterOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
-import { IAnyObject, usePrevious, useSheshaApplication } from '@shesha/reactjs';
-import fastDeepEqual from 'fast-deep-equal';
-import { memoize } from 'lodash';
+import { IAnyObject, useSheshaApplication } from '@shesha/reactjs';
+import { useEffectOnce } from 'react-use';
 import { ReportingReportParameterDto } from 'apis/reportingReportParameter';
-import { useReportingReportGetParameters } from 'apis/reportingReport';
 import { ParametersFilter } from './parametersFilter';
-
-import { Report } from './report';
+import 'devexpress-reporting/dx-webdocumentviewer';
 
 interface IReportViewerPartialProps {
   id: string;
+  parameters: ReportingReportParameterDto[];
 }
 
 const PATH = 'DXXRDV';
 
-export const ReportViewerPartial: FC<IReportViewerPartialProps> = ({ id }) => {
-  const [isDrawerShown, setIsDrawerShown] = useState(false);
-  const [isFilterBtnHidden, setFilterBtnHidden] = useState(false);
+interface IReportViewerPartialState {
+  isDrawerShown?: boolean;
+}
+
+export const ReportViewerPartial: FC<IReportViewerPartialProps> = ({ id, parameters }) => {
+  const [state, setState] = useState<IReportViewerPartialState>({ isDrawerShown: false });
   const reportDesignerBindingRef = useRef<JSReportViewer>();
 
   const { backendUrl } = useSheshaApplication();
-
-  const { refetch, data } = useReportingReportGetParameters({ queryParams: { reportId: id }, lazy: true });
-
-  useEffect(() => {
-    if (id) {
-      refetch();
-    }
-  }, [id, refetch]);
 
   const designer = useRef<HTMLDivElement>(null);
 
@@ -46,65 +39,40 @@ export const ReportViewerPartial: FC<IReportViewerPartialProps> = ({ id }) => {
     };
   }, [backendUrl]);
 
-  // const callbacks = useMemo(() => {
-  //   return {
-  //     CustomizeElements(_: any, e: any) {
-  //       const panelPart = e.GetById(PreviewElements.RightPanel);
-  //       const index = e.Elements.indexOf(panelPart);
-  //       e.Elements.splice(index, 1);
-  //     },
-  //     BeforeRender(s: JSReportViewer) {
-  //       AsyncExportApproach(true);
-  //       // console.log('BeforeRender s: ', s);
-  //       // console.log('BeforeRender s.previewModel._disposables.length: ', s.previewModel._disposables.length);
-  //       // console.log('BeforeRender s.previewModel.rootStyle: ', s.previewModel.rootStyle);
-  //       // console.log('BeforeRender s.previewExists(): ', s.previewExists());
+  const showDrawer = () => setState((prevState) => ({ ...prevState, isDrawerShown: true }));
 
-  //       // // console.log('BeforeRender Object.keys(s.previewModel): ', Object.keys(s.previewModel));
-  //       // console.log('BeforeRender Object.keys(s.previewModel).length: ', Object.keys(s.previewModel).length);
+  const hideDrawer = () => setState((prevState) => ({ ...prevState, isDrawerShown: false }));
 
-  //       reportDesignerBindingRef.current = s;
-  //     },
-  //   };
-  // }, []);
+  const callbacks = useMemo(() => {
+    return {
+      CustomizeElements(_: any, e: any) {
+        const panelPart = e.GetById(PreviewElements.RightPanel);
+        const index = e.Elements.indexOf(panelPart);
+        e.Elements.splice(index, 1);
+      },
+      BeforeRender(s: JSReportViewer) {
+        AsyncExportApproach(true);
 
-  useEffect(() => {
-    if (isDrawerShown) {
-      setFilterBtnHidden(true);
-    } else {
-      setTimeout(() => {
-        setFilterBtnHidden(false);
-      }, 400);
-    }
-  }, [isDrawerShown]);
+        reportDesignerBindingRef.current = s;
+      },
+      DocumentReady(s: any, e: any) {
+        console.log('DocumentReady s, e: ', s, e);
+        hideDrawer();
+      },
+      ServerError(s: any, e: any) {
+        console.log('ServerError s, e: ', s, e);
+        hideDrawer();
+      },
+    };
+  }, []);
 
-  useEffect(() => {
+  useEffectOnce(() => {
     if (designer?.current) {
-      console.log();
-
       ko.applyBindings(
         {
           reportUrl, // : reportUrl + '?incidentType=0a2ef29f-2ccd-4463-9863-8834c0c82643',
           requestOptions,
-          callbacks: {
-            CustomizeElements(_: any, e: any) {
-              const panelPart = e.GetById(PreviewElements.RightPanel);
-              const index = e.Elements.indexOf(panelPart);
-              e.Elements.splice(index, 1);
-            },
-            BeforeRender(s: JSReportViewer) {
-              AsyncExportApproach(true);
-              // console.log('BeforeRender s: ', s);
-              // console.log('BeforeRender s.previewModel._disposables.length: ', s.previewModel._disposables.length);
-              // console.log('BeforeRender s.previewModel.rootStyle: ', s.previewModel.rootStyle);
-              // console.log('BeforeRender s.previewExists(): ', s.previewExists());
-
-              // // console.log('BeforeRender Object.keys(s.previewModel): ', Object.keys(s.previewModel));
-              // console.log('BeforeRender Object.keys(s.previewModel).length: ', Object.keys(s.previewModel).length);
-
-              reportDesignerBindingRef.current = s;
-            },
-          },
+          callbacks,
         },
         designer?.current,
       );
@@ -117,24 +85,20 @@ export const ReportViewerPartial: FC<IReportViewerPartialProps> = ({ id }) => {
         ko?.cleanNode(designerRef);
       }
     };
-  }, [reportUrl, requestOptions]);
-
-  const showDrawer = () => setIsDrawerShown(true);
-
-  const hideDrawer = () => setIsDrawerShown(false);
+  });
 
   useEffect(() => {
-    if (data) {
+    if (parameters) {
       setTimeout(() => {
         showDrawer();
       }, 500);
     }
-  }, [data]);
+  }, [parameters]);
 
   const clearPreviousFilters = () => {
     const binding = reportDesignerBindingRef?.current;
 
-    data?.result?.forEach((val) => {
+    parameters?.forEach((val) => {
       if (
         typeof binding?.GetParametersModel === 'function' &&
         typeof val?.internalName === 'string' &&
@@ -149,11 +113,9 @@ export const ReportViewerPartial: FC<IReportViewerPartialProps> = ({ id }) => {
   const onApply = (params: IAnyObject) => {
     hideDrawer();
 
-    // clearPreviousFilters();
+    clearPreviousFilters();
 
     const binding = reportDesignerBindingRef?.current;
-
-    // console.log('binding?.GetParametersModel', binding?.GetParametersModel());
 
     if (typeof binding?.GetParametersModel === 'function') {
       Object.keys(params)?.forEach((key) => {
@@ -163,11 +125,7 @@ export const ReportViewerPartial: FC<IReportViewerPartialProps> = ({ id }) => {
       });
     }
 
-    try {
-      binding?.StartBuild();
-    } catch (error) {
-      console.log('error: ', error);
-    }
+    binding?.StartBuild();
   };
 
   return (
@@ -178,15 +136,15 @@ export const ReportViewerPartial: FC<IReportViewerPartialProps> = ({ id }) => {
         position: 'relative',
       }}
     >
-      {!!data?.result?.length && (
+      {!!parameters?.length && (
         <div
           className={classNames('dx-report-filter-btn-container', {
-            hidden: isFilterBtnHidden,
+            hidden: state?.isDrawerShown,
           })}
           style={{
             position: 'absolute',
             right: 12,
-            zIndex: 10000,
+            // zIndex: 10000,
             top: 15,
           }}
         >
@@ -203,19 +161,14 @@ export const ReportViewerPartial: FC<IReportViewerPartialProps> = ({ id }) => {
         placement="right"
         closable={false}
         onClose={hideDrawer}
-        visible={isDrawerShown}
+        visible={state?.isDrawerShown}
         getContainer={false}
-        style={{ marginTop: 37.5 }}
+        style={{ marginTop: 55 }}
         className="report-parameters-drawer"
         width={550}
         mask={false}
       >
-        <ParametersFilter
-          id={id}
-          onApply={onApply}
-          onCancel={hideDrawer}
-          parameters={data?.result as ReportingReportParameterDto[]}
-        />
+        <ParametersFilter id={id} onApply={onApply} onCancel={hideDrawer} parameters={parameters} />
       </Drawer>
     </div>
   );
