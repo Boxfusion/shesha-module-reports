@@ -1,7 +1,7 @@
 import { Alert, Button, Form, Input, Modal } from 'antd';
 import React, { FC, useState } from 'react';
 import classNames from 'classnames';
-import { ShaRoutingProvider, SidebarMenuProvider, useAuth, SectionSeparator } from 'shesha-reactjs';
+import { ShaRoutingProvider, SidebarMenuProvider, useAuth, SectionSeparator } from '@shesha/reactjs';
 
 import './index.less';
 

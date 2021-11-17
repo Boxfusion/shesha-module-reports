@@ -1,6 +1,6 @@
 import '../src/styles/index.less';
 import 'antd/dist/antd.less';
-import 'shesha-reactjs/dist/styles.less';
+import '@shesha/reactjs/dist/styles.less';
 
 import React from 'react';
 import { RestfulProvider } from 'restful-react';

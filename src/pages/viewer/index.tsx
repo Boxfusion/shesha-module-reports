@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from 'react';
-import { IndexToolbar, MainLayout, useShaRouting } from 'shesha-reactjs';
+import { IndexToolbar, MainLayout, useShaRouting } from '@shesha/reactjs';
 import { CloseOutlined } from '@ant-design/icons';
 import { usePrevious } from 'react-use';
 import { useQueryParams } from 'hooks';
@@ -13,7 +13,7 @@ export interface IReportViewerPageProps {
 export const ReportViewerPage: FC<IReportViewerPageProps> = ({ id: idParam }) => {
   const { router } = useShaRouting();
 
-  const id: string = router?.query?.id?.toString() || idParam;
+  const id: string = idParam || router?.query?.id?.toString() || '';
 
   const { refetch, data } = useReportingReportGet({ queryParams: { id } });
 

@@ -3,7 +3,7 @@ import { Button, Checkbox, DatePicker, Form, Input, InputNumber, TimePicker } fr
 import moment, { isMoment } from 'moment';
 import { Store } from 'antd/lib/form/interface';
 import { orderBy } from 'lodash';
-import { EntityDropdown, RefListDropDown, useUi, IAnyObject } from 'shesha-reactjs';
+import { EntityDropdown, RefListDropDown, useUi, IAnyObject } from '@shesha/reactjs';
 import { ReportingReportParameterDto } from 'apis/reportingReport';
 
 enum FilterDataTypes {

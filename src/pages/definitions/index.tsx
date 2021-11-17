@@ -1,7 +1,7 @@
 import { Col, List, Row, Tooltip } from 'antd';
 import _ from 'lodash';
 import React, { FC, useEffect } from 'react';
-import { CollapsiblePanel, MainLayout, SectionSeparator, ShaSpin, useUi, ValidationErrors } from 'shesha-reactjs';
+import { CollapsiblePanel, MainLayout, SectionSeparator, ShaSpin, useUi, ValidationErrors } from '@shesha/reactjs';
 import { nanoid } from 'nanoid';
 import { ReportingReportDto, useReportingReportGetAll } from 'apis/reportingReport';
 

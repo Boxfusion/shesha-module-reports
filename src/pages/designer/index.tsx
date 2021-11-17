@@ -2,21 +2,23 @@ import React, { FC, useEffect, useMemo, useRef } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import 'devexpress-reporting/dx-reportdesigner';
 import ko from 'knockout';
-import { IndexToolbar, MainLayout, useShaRouting, useSheshaApplication } from 'shesha-reactjs';
+import { IndexToolbar, MainLayout, useShaRouting, useSheshaApplication } from '@shesha/reactjs';
+import { useWindow } from 'hooks';
 
 const PATH = 'api/ReportDesigner/GetReportDesignerModel';
 
-export interface IReportDesignerPageProps {}
+export interface IReportDesignerPageProps {
+  id?: string;
+}
 
-export const ReportDesignerPage: FC<IReportDesignerPageProps> = () => {
+export const ReportDesignerPage: FC<IReportDesignerPageProps> = ({ id: url }) => {
   const { router } = useShaRouting();
   const { backendUrl } = useSheshaApplication();
   const designer = useRef<HTMLDivElement>(null);
-  const { push, query } = router;
+  const window = useWindow();
+  const { push, query } = router || {};
 
-  console.log('ko: ', ko);
-
-  const id = query?.id?.toString();
+  const id = url || query?.id?.toString();
 
   const reportUrl = ko?.observable(id);
 
@@ -47,6 +49,12 @@ export const ReportDesignerPage: FC<IReportDesignerPageProps> = () => {
     };
   }, [reportUrl, requestOptions]);
 
+  const goToReports = () => {
+    if (push) {
+      push('/reports');
+    }
+  };
+
   return (
     <MainLayout
       title="Report designer"
@@ -56,7 +64,7 @@ export const ReportDesignerPage: FC<IReportDesignerPageProps> = () => {
           items={[
             {
               title: 'Close',
-              onClick: () => push('/reports'),
+              onClick: goToReports,
               icon: <CloseOutlined />,
             },
           ]}
@@ -64,7 +72,7 @@ export const ReportDesignerPage: FC<IReportDesignerPageProps> = () => {
       }
     >
       <div style={{ width: '100%', height: '1000px' }}>
-        <div ref={designer} data-bind="dxReportDesigner: $data" />
+        {window ? <div ref={designer} data-bind="dxReportDesigner: $data" /> : null}
       </div>
     </MainLayout>
   );

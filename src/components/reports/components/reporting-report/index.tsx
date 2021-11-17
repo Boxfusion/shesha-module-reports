@@ -8,8 +8,8 @@ import {
 } from '@ant-design/icons';
 import { Modal } from 'antd';
 import React, { FC, useRef, useState } from 'react';
-import { GenericCreateModal, IShaDataTableProps, IToolbarItem, SimpleIndexPage } from 'shesha-reactjs';
-// import { DataTableFullInstance } from 'shesha-reactjs/dist/providers/dataTable/contexts';
+import { GenericCreateModal, IShaDataTableProps, IToolbarItem, SimpleIndexPage } from '@shesha/reactjs';
+// import { DataTableFullInstance } from '@shesha/reactjs/dist/providers/dataTable/contexts';
 import { useReportingReportDelete, useReportingReportCreate } from 'apis/reportingReport';
 
 interface IReportingReportProps {

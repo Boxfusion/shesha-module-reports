@@ -8,7 +8,14 @@ import {
 } from '@ant-design/icons';
 import { Modal } from 'antd';
 import React, { FC, useRef, useState } from 'react';
-import { GenericCreateModal, IShaDataTableProps, IToolbarItem, SimpleIndexPage } from 'shesha-reactjs';
+import {
+  GenericCreateModal,
+  IShaDataTableProps,
+  IToolbarItem,
+  SimpleIndexPage,
+  useShaRouting,
+  useSheshaApplication,
+} from '@shesha/reactjs';
 import { useReportingReportCreate, useReportingReportDelete } from 'apis/reportingReport';
 
 export interface IReportingReportProps {
@@ -46,13 +53,18 @@ export interface IReportingReportProps {
   reportViewerPageUrl?: string;
 }
 
-const AllReportsPage: FC<IReportingReportProps> = ({
+export const AllReportsPage: FC<IReportingReportProps> = ({
   tableConfigId = 'ReportingReport_Index',
   reportsDetailsPageUrl = '/reports/details',
   reportEditPageUrl = '/reports/edit',
   reportDesignerPageUrl = '/reports/designer',
   reportViewerPageUrl = '/reports/viewer',
 }) => {
+  const { router } = useShaRouting();
+  const { backendUrl } = useSheshaApplication();
+
+  console.log('AllReportsPage router, backendUrl: ', router, backendUrl);
+
   const { mutate } = useReportingReportDelete({});
 
   const [showCreateModal, setShowCreateModal] = useState(false);

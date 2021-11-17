@@ -5,7 +5,7 @@ import { AsyncExportApproach, JSReportViewer, PreviewElements } from 'devexpress
 import { Button, Drawer } from 'antd';
 import { FilterOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
-import { IAnyObject, usePrevious, useSheshaApplication } from 'shesha-reactjs';
+import { IAnyObject, usePrevious, useSheshaApplication } from '@shesha/reactjs';
 import fastDeepEqual from 'fast-deep-equal';
 import { memoize } from 'lodash';
 import { ReportingReportParameterDto } from 'apis/reportingReportParameter';

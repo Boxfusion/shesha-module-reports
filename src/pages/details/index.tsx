@@ -7,7 +7,7 @@ import {
   SearchOutlined,
 } from '@ant-design/icons';
 import { Button, message, Modal, Space } from 'antd';
-import React, { FC, useState, useRef, useEffect } from 'react';
+import React, { FC, useState, useRef } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import XMLViewer from 'react-xml-viewer';
@@ -20,13 +20,14 @@ import {
   GenericEditModal,
   IDataTableInstance,
   useShaRouting,
-} from 'shesha-reactjs';
+} from '@shesha/reactjs';
 import { ReportingReportDto, ReportingReportParameterDto, useReportingReportGet } from 'apis/reportingReport';
 import {
   useReportingReportParameterCreate,
   useReportingReportParameterGet,
   useReportingReportParameterUpdate,
 } from 'apis/reportingReportParameter';
+import markup from './formMarkup.json';
 
 export interface IReportingReportDetailsProps {
   /**
@@ -42,6 +43,8 @@ export interface IReportingReportDetailsProps {
    * @default - '/reports/reporting-report/edit'
    */
   reportEditPageUrl?: string;
+
+  id?: string;
 }
 
 interface IDetailsReportPageState {
@@ -63,18 +66,19 @@ const customTheme = {
 };
 
 export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
+  id: reportId,
   reportPageUrl = '/reports',
   reportEditPageUrl = '/reports/edit',
 }) => {
   const { router } = useShaRouting();
-  const { query, push } = router;
+  const { query, push } = router || { push: (_) => null };
   const [state, setState] = useState<IDetailsReportPageState>(INITIAL_STATE);
   const { mutate: deleteParameterHttp } = useMutate({
     verb: 'DELETE',
     path: '/api/services/Reporting/ReportingReportParameter/Delete',
   });
 
-  const id = query?.id?.toString();
+  const id = reportId || query?.id?.toString();
 
   const tableRef = useRef<IDataTableInstance>(null);
 
@@ -133,10 +137,6 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
 
   const onDataLoaded = (report: ReportingReportDto) => setState((prev) => ({ ...prev, report }));
 
-  useEffect(() => {
-    console.log('state: ', state);
-  }, [state]);
-
   return (
     <>
       <GenericDetailsPage
@@ -156,6 +156,7 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
         ]}
         onDataLoaded={onDataLoaded}
         fetcher={useReportingReportGet}
+        markup={markup as any}
         formPath="/reports/reporting-report/details"
         formSections={{
           reportingReportsChildTable: () => (
@@ -184,19 +185,23 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
               />
             </DataTableProvider>
           ),
-          reportXmlDefinition: (data: ReportingReportDto) => (
-            <div>
-              <div style={{ marginBottom: 6 }}>
-                <Button icon={<CopyOutlined />} size="small" onClick={() => onCopyToClipboard(data)}>
-                  Copy to clipboard
-                </Button>
+          reportXmlDefinition: (data: ReportingReportDto) => {
+            console.log('data.reportDefinitionXml: ', data.reportDefinitionXml);
+
+            return (
+              <div>
+                <div style={{ marginBottom: 6 }}>
+                  <Button icon={<CopyOutlined />} size="small" onClick={() => onCopyToClipboard(data)}>
+                    Copy to clipboard
+                  </Button>
+                </div>
+                <Space />
+                <div style={{ overflow: 'auto', width: '100%', maxHeight: 560 }}>
+                  <XMLViewer xml={data.reportDefinitionXml || ''} theme={customTheme} indentSize={4} collapsible />
+                </div>
               </div>
-              <Space />
-              <div style={{ overflow: 'auto', width: '100%', maxHeight: 560 }}>
-                <XMLViewer xml={data.reportDefinitionXml} theme={customTheme} indentSize={4} collapsible />
-              </div>
-            </div>
-          ),
+            );
+          },
         }}
       />
 
