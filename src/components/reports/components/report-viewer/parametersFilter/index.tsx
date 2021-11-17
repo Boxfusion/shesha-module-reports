@@ -90,11 +90,17 @@ export const ParametersFilter: FC<IParametersFilterProps> = ({ onApply, onCancel
   };
 
   const onFinish = (store: Store) => {
-    console.log('onFinish');
-
     const response: IAnyObject = {};
 
-    Object.keys(store).forEach((key: string) => {
+    Object.keys(store).forEach((key) => {
+      const foundDate = parameters?.find(
+        ({ internalName, dataType }) => internalName === key && dataType === FilterDataTypes.Date,
+      );
+
+      if (foundDate && !store[key]) {
+        store[key] = new Date('1900-01-01').toISOString();
+      }
+
       if (![null, undefined].includes(store[key]) || (typeof store[key] === 'string' && !store[key].trim())) {
         if (isMoment(store[key])) {
           response[key] = store[key]?.toISOString();

@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 import { IndexToolbar, MainLayout, useShaRouting } from '@shesha/reactjs';
 import { CloseOutlined } from '@ant-design/icons';
 import { usePrevious } from 'react-use';
-import { useQueryParams } from 'hooks';
+import { useWindow } from 'hooks';
 import { useReportingReportGet, useReportingReportGetParameters } from 'apis/reportingReport';
 import { ReportViewerPartial } from 'components/reports/components/report-viewer';
 
@@ -12,6 +12,7 @@ export interface IReportViewerPageProps {
 
 export const ReportViewerPage: FC<IReportViewerPageProps> = ({ id: idParam }) => {
   const { router } = useShaRouting();
+  const window = useWindow();
 
   const id: string = idParam || router?.query?.id?.toString() || '';
 
@@ -39,7 +40,7 @@ export const ReportViewerPage: FC<IReportViewerPageProps> = ({ id: idParam }) =>
 
   const displayName = reportResponse?.result?.displayName;
 
-  const showDesigner = typeof window !== undefined && !!id && reportResponse?.success;
+  const showDesigner = !!window && !!id && reportResponse?.success;
 
   return (
     <MainLayout
