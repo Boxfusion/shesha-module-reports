@@ -55,14 +55,6 @@ export const ReportViewerPartial: FC<IReportViewerPartialProps> = ({ id, paramet
 
         reportDesignerBindingRef.current = s;
       },
-      DocumentReady(s: any, e: any) {
-        console.log('DocumentReady s, e: ', s, e);
-        hideDrawer();
-      },
-      ServerError(s: any, e: any) {
-        console.log('ServerError s, e: ', s, e);
-        hideDrawer();
-      },
     };
   }, []);
 
