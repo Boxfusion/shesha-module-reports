@@ -4,6 +4,7 @@ import 'devexpress-reporting/dx-reportdesigner';
 import ko from 'knockout';
 import { IndexToolbar, MainLayout, ShaSpin, useShaRouting, useSheshaApplication } from '@shesha/reactjs';
 import { useWindow } from 'hooks';
+import '../../styles/devexpress.less';
 
 const PATH = 'api/ReportDesigner/GetReportDesignerModel';
 

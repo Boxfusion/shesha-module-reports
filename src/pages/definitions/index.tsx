@@ -33,7 +33,7 @@ export const ReportsDefinitionsPage: FC<IReportsDefinitionsPageProps> = ({
 
   const result = _.chunk(
     _.chain(allReportingReports)
-      .groupBy((x) => x.category.item)
+      .groupBy((x) => x?.category?.item)
       .map((v: any, i: any) => {
         return {
           name: i as string,

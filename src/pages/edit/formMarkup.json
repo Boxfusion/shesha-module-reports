@@ -38,7 +38,7 @@
         {
           "id": "7d5fe248-cc86-4f4e-83e5-994adce73f85",
           "type": "dropdown",
-          "name": "reportType.itemValue",
+          "name": "reportType",
           "label": "Report Type",
           "labelAlign": "right",
           "parentId": "78e5a38f-6d6b-48f6-b268-33620f6097a6",
@@ -48,7 +48,8 @@
           "dataSourceType": "referenceList",
           "referenceListNamespace": "Shesha.Reporting",
           "referenceListName": "ReportType",
-          "settingsValidationErrors": []
+          "settingsValidationErrors": [],
+          "mode": ["single"]
         },
         {
           "id": "a0f2d08d-ca1f-4aa2-9e8c-30006aeda014",
@@ -60,12 +61,13 @@
           "hidden": false,
           "customVisibility": null,
           "validate": { "required": true },
-          "settingsValidationErrors": []
+          "settingsValidationErrors": [],
+          "initialValue": "default"
         },
         {
           "id": "dfee8ac8-8f4f-4018-9cdf-dc908a983c60",
           "type": "dropdown",
-          "name": "category.itemValue",
+          "name": "category",
           "label": "Category",
           "labelAlign": "right",
           "parentId": "78e5a38f-6d6b-48f6-b268-33620f6097a6",
@@ -75,7 +77,8 @@
           "dataSourceType": "referenceList",
           "referenceListNamespace": "Shesha.Reporting",
           "referenceListName": "ReportCategory",
-          "settingsValidationErrors": []
+          "settingsValidationErrors": [],
+          "mode": ["single"]
         },
         {
           "id": "c9e02c19-5a98-4ca7-b350-5c8cbb489318",
@@ -164,7 +167,8 @@
           "showCount": false,
           "allowClear": false,
           "validate": {},
-          "settingsValidationErrors": []
+          "settingsValidationErrors": [],
+          "passEmptyStringByDefault": true
         },
         {
           "id": "7a3d7916-8bc6-4927-9b22-02d995f4f252",

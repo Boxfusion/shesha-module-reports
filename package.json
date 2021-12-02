@@ -42,15 +42,15 @@
     "generate-fetcher": "restful-react import --config restful-react.config.js",
     "postgenerate-fetcher": "prettier ./src/apis/*.tsx --write",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "commit": "cz"
   },
   "peerDependencies": {
-    "react": "^17.x",
-    "react-dom": "^17.x",
-    "@shesha/reactjs": "latest",
-    "lodash": "^4.17.21",
+    "@ant-design/icons": "^4.5.0",
     "antd": "^4.13.0",
-    "@ant-design/icons": "^4.5.0"
+    "lodash": "^4.17.21",
+    "react": "^17.x",
+    "react-dom": "^17.x"
   },
   "devDependencies": {
     "@ant-design/icons": "^4.5.0",
@@ -102,6 +102,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "babel-preset-react-app": "^10.0.0",
     "css-loader": "^6.2.0",
+    "cz-conventional-changelog": "3.3.0",
     "dotenv-webpack": "^7.0.3",
     "enzyme": "^3.11.0",
     "enzyme-to-json": "^3.6.2",
@@ -162,7 +163,7 @@
   "dependencies": {
     "@devexpress/analytics-core": "^20.2.4",
     "@microsoft/signalr": "^5.0.11",
-    "@shesha/reactjs": "^0.3.23",
+    "@shesha/reactjs": "^0.3.27",
     "@use-it/interval": "^1.0.0",
     "axios": "^0.21.4",
     "classnames": "^2.3.1",
@@ -182,5 +183,10 @@
     "restful-react": "^15.9.2",
     "sortablejs": "^1.14.0",
     "stream-browserify": "^3.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

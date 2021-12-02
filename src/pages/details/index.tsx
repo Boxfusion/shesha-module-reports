@@ -27,7 +27,8 @@ import {
   useReportingReportParameterGet,
   useReportingReportParameterUpdate,
 } from 'apis/reportingReportParameter';
-import markup from './formMarkup.json';
+import addParametersModalFormMarkup from './addParametersModalFormMarkup.json';
+import pageFormMarkup from './pageFormMarkup.json';
 
 export interface IReportingReportDetailsProps {
   /**
@@ -43,6 +44,16 @@ export interface IReportingReportDetailsProps {
    * @default - '/reports/reporting-report/edit'
    */
   reportEditPageUrl?: string;
+
+  /**
+   * If passed, it will override the details page form markup
+   */
+  detailsFormPath?: string;
+
+  /**
+   * If passed, it will override the form that is used by add parameter & edit parameters modals
+   */
+  addParameterFormPath?: string;
 
   id?: string;
 }
@@ -69,6 +80,8 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
   id: reportId,
   reportPageUrl = '/reports',
   reportEditPageUrl = '/reports/edit',
+  detailsFormPath,
+  addParameterFormPath,
 }) => {
   const { router } = useShaRouting();
   const { query, push } = router || { push: (_) => null };
@@ -137,6 +150,9 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
 
   const onDataLoaded = (report: ReportingReportDto) => setState((prev) => ({ ...prev, report }));
 
+  const modalsFormPath = addParameterFormPath || '/reports/modal/add-parameter';
+  const modalsFormMarkup = addParameterFormPath ? undefined : addParametersModalFormMarkup;
+
   return (
     <>
       <GenericDetailsPage
@@ -156,8 +172,8 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
         ]}
         onDataLoaded={onDataLoaded}
         fetcher={useReportingReportGet}
-        markup={markup as any}
-        formPath="/reports/reporting-report/details"
+        markup={detailsFormPath ? undefined : (pageFormMarkup as any)}
+        formPath={detailsFormPath || '/reports/details'}
         formSections={{
           reportingReportsChildTable: () => (
             <DataTableProvider tableId="ReportingReportParameter_ChildTable_Index" parentEntityId={id}>
@@ -186,8 +202,6 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
             </DataTableProvider>
           ),
           reportXmlDefinition: (data: ReportingReportDto) => {
-            console.log('data.reportDefinitionXml: ', data.reportDefinitionXml);
-
             return (
               <div>
                 <div style={{ marginBottom: 6 }}>
@@ -211,7 +225,8 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
         onSuccess={onSuccess}
         updater={useReportingReportParameterCreate}
         title="Reporting Reports Parameter"
-        formPath="/reports/reporting-report/add-parameter"
+        formMarkup={modalsFormMarkup as any}
+        formPath={modalsFormPath}
         prepareValues={prepareValues}
       />
 
@@ -224,7 +239,8 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
           onSuccess={onSuccess}
           updater={useReportingReportParameterUpdate}
           title={() => 'Reporting Reports Parameter'}
-          formPath="/reports/reporting-report/add-parameter"
+          formPath={modalsFormPath}
+          formMarkup={modalsFormMarkup as any}
           prepareValues={prepareValues}
         />
       )}

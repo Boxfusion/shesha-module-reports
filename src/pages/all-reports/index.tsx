@@ -8,15 +8,9 @@ import {
 } from '@ant-design/icons';
 import { Modal } from 'antd';
 import React, { FC, useRef, useState } from 'react';
-import {
-  GenericCreateModal,
-  IShaDataTableProps,
-  IToolbarItem,
-  SimpleIndexPage,
-  useShaRouting,
-  useSheshaApplication,
-} from '@shesha/reactjs';
+import { GenericCreateModal, IShaDataTableProps, IToolbarItem, SimpleIndexPage } from '@shesha/reactjs';
 import { useReportingReportCreate, useReportingReportDelete } from 'apis/reportingReport';
+import createReportMarkup from './createReportMarkup.json';
 
 export interface IReportingReportProps {
   /**
@@ -51,6 +45,11 @@ export interface IReportingReportProps {
    * @default - '/reports/report-viewer'
    */
   reportViewerPageUrl?: string;
+
+  /**
+   * Whether the component should render the form using the path. If not true, the component will use the path instead of internal markup
+   */
+  useFormPath?: boolean;
 }
 
 export const AllReportsPage: FC<IReportingReportProps> = ({
@@ -59,12 +58,8 @@ export const AllReportsPage: FC<IReportingReportProps> = ({
   reportEditPageUrl = '/reports/edit',
   reportDesignerPageUrl = '/reports/designer',
   reportViewerPageUrl = '/reports/viewer',
+  useFormPath = false,
 }) => {
-  const { router } = useShaRouting();
-  const { backendUrl } = useSheshaApplication();
-
-  console.log('AllReportsPage router, backendUrl: ', router, backendUrl);
-
   const { mutate } = useReportingReportDelete({});
 
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -141,7 +136,8 @@ export const AllReportsPage: FC<IReportingReportProps> = ({
       <GenericCreateModal
         title="Create New Report"
         visible={showCreateModal}
-        formPath="/reports/reporting-report/create"
+        formMarkup={useFormPath ? undefined : (createReportMarkup as any)}
+        formPath={useFormPath ? '/reports/create' : ''}
         updater={useReportingReportCreate}
         onCancel={toggleCreateModalVisibility}
         onSuccess={onSuccess}

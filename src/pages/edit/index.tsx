@@ -5,9 +5,14 @@ import markup from './formMarkup.json';
 
 export interface IEditReportPageProps {
   id?: string;
+
+  /**
+   * If passed, it will override the details page form markup
+   */
+  formPath?: string;
 }
 
-export const EditReportPage: FC<IEditReportPageProps> = ({ id }) => {
+export const EditReportPage: FC<IEditReportPageProps> = ({ id, formPath }) => {
   const { router } = useShaRouting();
 
   const reportId = id || router?.query?.id?.toString();
@@ -15,7 +20,7 @@ export const EditReportPage: FC<IEditReportPageProps> = ({ id }) => {
   return (
     <GenericEditPage
       title={() => 'Edit Report Details'}
-      // formPath="/reports/edit"
+      formPath={formPath || '/reports/edit'}
       markup={markup as any}
       id={reportId}
       fetcher={useReportingReportGet}

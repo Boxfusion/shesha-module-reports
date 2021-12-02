@@ -46,9 +46,9 @@ export const ReportViewerPartial: FC<IReportViewerPartialProps> = ({ id, paramet
   const callbacks = useMemo(() => {
     return {
       CustomizeElements(_: any, e: any) {
-        const panelPart = e.GetById(PreviewElements.RightPanel);
-        const index = e.Elements.indexOf(panelPart);
-        e.Elements.splice(index, 1);
+        // const panelPart = e.GetById(PreviewElements.RightPanel);
+        // const index = e.Elements.indexOf(panelPart);
+        // e.Elements.splice(index, 1);
       },
       BeforeRender(s: JSReportViewer) {
         AsyncExportApproach(true);
@@ -111,8 +111,6 @@ export const ReportViewerPartial: FC<IReportViewerPartialProps> = ({ id, paramet
 
     if (typeof binding?.GetParametersModel === 'function') {
       Object.keys(params)?.forEach((key) => {
-        console.log('onApply In forEach');
-
         binding.GetParametersModel()[key](params[key]);
       });
     }

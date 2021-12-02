@@ -5,6 +5,7 @@ import { usePrevious } from 'react-use';
 import { useWindow } from 'hooks';
 import { useReportingReportGet, useReportingReportGetParameters } from 'apis/reportingReport';
 import { ReportViewerPartial } from 'components/reports/components/report-viewer';
+import '../../styles/devexpress.less';
 
 export interface IReportViewerPageProps {
   id?: string;
