@@ -1,11 +1,12 @@
 import { Col, List, Row, Tooltip } from 'antd';
 import _ from 'lodash';
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   CollapsiblePanel,
-  MainLayout,
+  getDefaultLayout,
+  Page,
+  PageWithLayout,
   SectionSeparator,
-  ShaSpin,
   useShaRouting,
   useUi,
   ValidationErrors,
@@ -17,7 +18,7 @@ export interface IReportsDefinitionsPageProps {
   reportViewerPageUrl?: string;
 }
 
-export const ReportsDefinitionsPage: FC<IReportsDefinitionsPageProps> = ({
+export const ReportsDefinitionsPage: PageWithLayout<IReportsDefinitionsPageProps> = ({
   reportViewerPageUrl = '/reports/viewer',
 }) => {
   const { gutter } = useUi();
@@ -60,50 +61,50 @@ export const ReportsDefinitionsPage: FC<IReportsDefinitionsPageProps> = ({
   };
 
   return (
-    <MainLayout title="Reports">
+    <Page title="Reports" loading={loading}>
       <ValidationErrors error={error as any} />
 
-      <ShaSpin spinning={loading}>
-        <CollapsiblePanel>
-          <>
-            {result.map((item, index) => (
-              <Row gutter={gutter} id={`row_${index}`} key={nanoid()}>
-                {item.map(({ name, reports }, i) => (
-                  <Col span={12} id={`col_${i}_row_${index}`} key={nanoid()}>
-                    <List
-                      key={`col_row_${name}`}
-                      header={
-                        <h2>
-                          <SectionSeparator sectionName={name} />
-                        </h2>
-                      }
-                      dataSource={reports?.filter(({ showInReportsMenu }) => showInReportsMenu)}
-                      bordered={false}
-                      renderItem={({ id, displayName, description }: any) => (
-                        <List.Item key={nanoid()}>
-                          <Tooltip placement="right" title={description}>
-                            <a
-                              href={getRedirectUrl(id)}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                redirectToReportViewerPage(id);
-                              }}
-                            >
-                              {displayName}
-                            </a>
-                          </Tooltip>
-                        </List.Item>
-                      )}
-                    />
-                  </Col>
-                ))}
-              </Row>
-            ))}
-          </>
-        </CollapsiblePanel>
-      </ShaSpin>
-    </MainLayout>
+      <CollapsiblePanel>
+        <>
+          {result.map((item, index) => (
+            <Row gutter={gutter} id={`row_${index}`} key={nanoid()}>
+              {item.map(({ name, reports }, i) => (
+                <Col span={12} id={`col_${i}_row_${index}`} key={nanoid()}>
+                  <List
+                    key={`col_row_${name}`}
+                    header={
+                      <h2>
+                        <SectionSeparator sectionName={name} />
+                      </h2>
+                    }
+                    dataSource={reports?.filter(({ showInReportsMenu }) => showInReportsMenu)}
+                    bordered={false}
+                    renderItem={({ id, displayName, description }: any) => (
+                      <List.Item key={nanoid()}>
+                        <Tooltip placement="right" title={description}>
+                          <a
+                            href={getRedirectUrl(id)}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              redirectToReportViewerPage(id);
+                            }}
+                          >
+                            {displayName}
+                          </a>
+                        </Tooltip>
+                      </List.Item>
+                    )}
+                  />
+                </Col>
+              ))}
+            </Row>
+          ))}
+        </>
+      </CollapsiblePanel>
+    </Page>
   );
 };
+
+ReportsDefinitionsPage.getLayout = getDefaultLayout;
 
 export default ReportsDefinitionsPage;

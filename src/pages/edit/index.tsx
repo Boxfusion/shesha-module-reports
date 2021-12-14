@@ -1,5 +1,5 @@
-import React, { FC } from 'react';
-import { GenericEditPage, useShaRouting } from '@shesha/reactjs';
+import React from 'react';
+import { GenericEditPageDefault, getDefaultLayout, PageWithLayout, useShaRouting } from '@shesha/reactjs';
 import { useReportingReportGet, useReportingReportUpdate } from 'apis/reportingReport';
 import markup from './formMarkup.json';
 
@@ -12,13 +12,13 @@ export interface IEditReportPageProps {
   formPath?: string;
 }
 
-export const EditReportPage: FC<IEditReportPageProps> = ({ id, formPath }) => {
+export const EditReportPage: PageWithLayout<IEditReportPageProps> = ({ id, formPath }) => {
   const { router } = useShaRouting();
 
   const reportId = id || router?.query?.id?.toString();
 
   return (
-    <GenericEditPage
+    <GenericEditPageDefault
       title={() => 'Edit Report Details'}
       formPath={formPath || '/reports/edit'}
       markup={markup as any}
@@ -28,5 +28,7 @@ export const EditReportPage: FC<IEditReportPageProps> = ({ id, formPath }) => {
     />
   );
 };
+
+EditReportPage.getLayout = getDefaultLayout;
 
 export default EditReportPage;

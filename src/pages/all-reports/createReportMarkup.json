@@ -35,7 +35,7 @@
       "customVisibility": null,
       "validate": {},
       "dataSourceType": "referenceList",
-      "referenceListNamespace": " Boxfusion.Shesha",
+      "referenceListNamespace": "Boxfusion.Shesha",
       "referenceListName": "ReportType",
       "settingsValidationErrors": [],
       "mode": ["single"],

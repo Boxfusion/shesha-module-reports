@@ -1,5 +1,6 @@
 import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { getDefaultLayout } from '@shesha/reactjs';
 import { StoryApp } from 'components/app';
 import { AllReportsPage } from './';
 
@@ -16,6 +17,8 @@ const Template: ComponentStory<typeof AllReportsPage> = (args) => (
     <AllReportsPage {...args} />;
   </StoryApp>
 );
+
+AllReportsPage.getLayout = getDefaultLayout;
 
 export const Primary = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args

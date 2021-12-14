@@ -3,7 +3,14 @@ import { Button, Checkbox, DatePicker, Form, Input, InputNumber, TimePicker } fr
 import moment, { isMoment } from 'moment';
 import { Store } from 'antd/lib/form/interface';
 import { orderBy } from 'lodash';
-import { EntityDropdown, RefListDropDown, useUi, IAnyObject } from '@shesha/reactjs';
+import {
+  RefListDropDown,
+  useUi,
+  IAnyObject,
+  Autocomplete,
+  IGuidNullableEntityWithDisplayNameDto,
+  IReferenceListItemValueDto,
+} from '@shesha/reactjs';
 import { ReportingReportParameterDto } from 'apis/reportingReport';
 
 enum FilterDataTypes {
@@ -52,20 +59,20 @@ export const ParametersFilter: FC<IParametersFilterProps> = ({ onApply, onCancel
   const renderReflistParam = (parameter: ReportingReportParameterDto, multiple = false) => {
     return (
       <RefListDropDown
-        listName={parameter?.referenceListName as string}
-        listNamespace={parameter?.referenceListNamespace as string}
+        listName={parameter?.referenceListName || ''}
+        listNamespace={parameter?.referenceListNamespace || ''}
         mode={multiple ? 'multiple' : undefined}
       />
     );
   };
 
   const renderEntityDropdownParam = (parameter: ReportingReportParameterDto) => {
-    return <EntityDropdown typeShortAlias={parameter?.entityTypeShortAlias as string} />;
+    return <Autocomplete dataSourceType="entitiesList" typeShortAlias={parameter?.entityTypeShortAlias || ''} />;
   };
 
   const renderParamter = (parameter: ReportingReportParameterDto) => {
     switch (parameter?.dataType) {
-      case FilterDataTypes.String:
+      case FilterDataTypes.String: // Default => ""
         return renderStringParam();
       case FilterDataTypes.Date:
         return renderDateParam();
@@ -75,9 +82,9 @@ export const ParametersFilter: FC<IParametersFilterProps> = ({ onApply, onCancel
         return renderDateParam(true);
       case FilterDataTypes.Number:
         return renderNumberParam();
-      case FilterDataTypes.Boolean:
+      case FilterDataTypes.Boolean: // false
         return renderBooleanParam(parameter);
-      case FilterDataTypes.ReferenceList:
+      case FilterDataTypes.ReferenceList: // ""
         return renderReflistParam(parameter);
       case FilterDataTypes.MultiValueReferenceList:
         return renderReflistParam(parameter, true);
@@ -97,15 +104,25 @@ export const ParametersFilter: FC<IParametersFilterProps> = ({ onApply, onCancel
         ({ internalName, dataType }) => internalName === key && dataType === FilterDataTypes.Date,
       );
 
-      if (foundDate && !store[key]) {
+      const storeValue = store[key];
+
+      if (foundDate && !storeValue) {
         store[key] = new Date('1900-01-01').toISOString();
       }
 
-      if (![null, undefined].includes(store[key]) || (typeof store[key] === 'string' && !store[key].trim())) {
+      if (![null, undefined].includes(storeValue) || (typeof storeValue === 'string' && !storeValue.trim())) {
         if (isMoment(store[key])) {
-          response[key] = store[key]?.toISOString();
+          response[key] = storeValue?.toISOString();
+        } else if (typeof storeValue === 'object') {
+          const dataType = parameters?.find(({ internalName }) => internalName === key)?.dataType;
+
+          if (dataType === FilterDataTypes?.EntityReference) {
+            response[key] = (storeValue as IGuidNullableEntityWithDisplayNameDto)?.displayText;
+          } else if (dataType === FilterDataTypes?.ReferenceList) {
+            response[key] = (storeValue as IReferenceListItemValueDto)?.item;
+          }
         } else {
-          response[key] = store[key];
+          response[key] = storeValue;
         }
       }
     });
@@ -121,6 +138,7 @@ export const ParametersFilter: FC<IParametersFilterProps> = ({ onApply, onCancel
 
   const ooCancelClick = () => {
     form.resetFields();
+
     if (onCancel) {
       onCancel();
     }
@@ -136,7 +154,7 @@ export const ParametersFilter: FC<IParametersFilterProps> = ({ onApply, onCancel
         {orderBy(parameters, ['parameterOrderIndex'])
           ?.filter(({ hideParameter }) => !hideParameter)
           .map((parameter) => (
-            <Form.Item label={parameter?.displayName} key={parameter?.id} name={parameter.internalName as string}>
+            <Form.Item label={parameter?.displayName} key={parameter?.id} name={parameter.internalName || ''}>
               {renderParamter(parameter)}
             </Form.Item>
           ))}

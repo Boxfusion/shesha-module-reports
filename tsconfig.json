@@ -48,7 +48,7 @@
   },
   "include": [
     "src/**/*"
-  ],
+, "typings"  ],
   "exclude": [
     "coverage",
     "config",

@@ -1,5 +1,5 @@
-import React, { FC, useEffect } from 'react';
-import { IndexToolbar, MainLayout, useShaRouting } from '@shesha/reactjs';
+import React, { useEffect } from 'react';
+import { getDefaultLayout, Page, PageWithLayout, useShaRouting } from '@shesha/reactjs';
 import { CloseOutlined } from '@ant-design/icons';
 import { usePrevious } from 'react-use';
 import { useWindow } from 'hooks';
@@ -11,7 +11,7 @@ export interface IReportViewerPageProps {
   id?: string;
 }
 
-export const ReportViewerPage: FC<IReportViewerPageProps> = ({ id: idParam }) => {
+export const ReportViewerPage: PageWithLayout<IReportViewerPageProps> = ({ id: idParam }) => {
   const { router } = useShaRouting();
   const window = useWindow();
 
@@ -44,26 +44,24 @@ export const ReportViewerPage: FC<IReportViewerPageProps> = ({ id: idParam }) =>
   const showDesigner = !!window && !!id && reportResponse?.success;
 
   return (
-    <MainLayout
+    <Page
       title={displayName ? `${reportResponse?.result?.category?.item} : ${displayName}` : 'Report Viewer'}
       description="This is the Report View Page"
-      toolbar={
-        <IndexToolbar
-          items={[
-            {
-              title: 'Close',
-              onClick: () => router?.push('/reports'),
-              icon: <CloseOutlined />,
-            },
-          ]}
-        />
-      }
+      toolbarItems={[
+        {
+          title: 'Close',
+          onClick: () => router?.push('/reports'),
+          icon: <CloseOutlined />,
+        },
+      ]}
     >
       <div className="sha-report-viewer-page">
         {showDesigner ? <ReportViewerPartial id={id} parameters={reportParametersResponse?.result || []} /> : null}
       </div>
-    </MainLayout>
+    </Page>
   );
 };
+
+ReportViewerPage.getLayout = getDefaultLayout;
 
 export default ReportViewerPage;

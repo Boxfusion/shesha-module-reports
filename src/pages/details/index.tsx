@@ -6,19 +6,18 @@ import {
   PlusOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import { Button, message, Modal, Space } from 'antd';
-import React, { FC, useState, useRef } from 'react';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import XMLViewer from 'react-xml-viewer';
+import { Alert, Button, message, Modal, Space } from 'antd';
+import React, { useState, useRef } from 'react';
 import { useMutate } from 'restful-react';
 import {
   ChildTable,
   DataTableProvider,
   GenericCreateModal,
-  GenericDetailsPage,
+  GenericDetailsPageDefault,
   GenericEditModal,
+  getDefaultLayout,
   IDataTableInstance,
+  PageWithLayout,
   useShaRouting,
 } from '@shesha/reactjs';
 import { ReportingReportDto, ReportingReportParameterDto, useReportingReportGet } from 'apis/reportingReport';
@@ -27,6 +26,7 @@ import {
   useReportingReportParameterGet,
   useReportingReportParameterUpdate,
 } from 'apis/reportingReportParameter';
+import { Show } from 'components/show';
 import addParametersModalFormMarkup from './addParametersModalFormMarkup.json';
 import pageFormMarkup from './pageFormMarkup.json';
 
@@ -71,12 +71,7 @@ const INITIAL_STATE: IDetailsReportPageState = {
   reportModalMode: undefined,
 };
 
-const customTheme = {
-  attributeKeyColor: '#0074D9',
-  attributeValueColor: '#2ECC40',
-};
-
-export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
+export const ReportDetailsPage: PageWithLayout<IReportingReportDetailsProps> = ({
   id: reportId,
   reportPageUrl = '/reports',
   reportEditPageUrl = '/reports/edit',
@@ -142,12 +137,6 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
     return prepared;
   };
 
-  const onCopyToClipboard = (data: ReportingReportDto) => {
-    navigator?.clipboard?.writeText(data?.reportDefinitionXml as string);
-
-    message.success('Text copied successfully!');
-  };
-
   const onDataLoaded = (report: ReportingReportDto) => setState((prev) => ({ ...prev, report }));
 
   const modalsFormPath = addParameterFormPath || '/reports/modal/add-parameter';
@@ -155,7 +144,7 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
 
   return (
     <>
-      <GenericDetailsPage
+      <GenericDetailsPageDefault
         id={id}
         title={(data) => `${data?.category?.item}: ${data?.displayName}`}
         toolbarItems={[
@@ -173,7 +162,7 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
         onDataLoaded={onDataLoaded}
         fetcher={useReportingReportGet}
         markup={detailsFormPath ? undefined : (pageFormMarkup as any)}
-        formPath={detailsFormPath || '/reports/details'}
+        formPath="/reports/details"
         formSections={{
           reportingReportsChildTable: () => (
             <DataTableProvider tableId="ReportingReportParameter_ChildTable_Index" parentEntityId={id}>
@@ -202,17 +191,32 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
             </DataTableProvider>
           ),
           reportXmlDefinition: (data: ReportingReportDto) => {
+            const onCopyToClipboard = () => {
+              navigator?.clipboard?.writeText(data?.reportDefinitionXml || '');
+
+              message.success('Text copied successfully!');
+            };
+
+            if (!data?.reportDefinitionXml) {
+              return (
+                <Alert
+                  message="No XML Definition"
+                  description="This report has no XML definition"
+                  showIcon
+                  type="info"
+                />
+              );
+            }
+
             return (
               <div>
                 <div style={{ marginBottom: 6 }}>
-                  <Button icon={<CopyOutlined />} size="small" onClick={() => onCopyToClipboard(data)}>
+                  <Button icon={<CopyOutlined />} size="small" onClick={onCopyToClipboard}>
                     Copy to clipboard
                   </Button>
                 </div>
                 <Space />
-                <div style={{ overflow: 'auto', width: '100%', maxHeight: 560 }}>
-                  <XMLViewer xml={data.reportDefinitionXml || ''} theme={customTheme} indentSize={4} collapsible />
-                </div>
+                <div style={{ overflow: 'auto', width: '100%', maxHeight: 560 }}>{data?.reportDefinitionXml || ''}</div>
               </div>
             );
           },
@@ -230,10 +234,10 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
         prepareValues={prepareValues}
       />
 
-      {isEditModalOpen && (
+      <Show when={Boolean(isEditModalOpen)}>
         <GenericEditModal
           id={state?.selectedReportParamId as string}
-          visible={isEditModalOpen && !!state?.selectedReportParamId}
+          visible={!!isEditModalOpen && !!state?.selectedReportParamId}
           onCancel={onCloseModalClick}
           fetcher={useReportingReportParameterGet}
           onSuccess={onSuccess}
@@ -243,9 +247,11 @@ export const ReportingReportDetailsPage: FC<IReportingReportDetailsProps> = ({
           formMarkup={modalsFormMarkup as any}
           prepareValues={prepareValues}
         />
-      )}
+      </Show>
     </>
   );
 };
 
-export default ReportingReportDetailsPage;
+ReportDetailsPage.getLayout = getDefaultLayout;
+
+export default ReportDetailsPage;

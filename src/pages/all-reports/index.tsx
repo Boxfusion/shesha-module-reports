@@ -7,8 +7,14 @@ import {
   SearchOutlined,
 } from '@ant-design/icons';
 import { Modal } from 'antd';
-import React, { FC, useRef, useState } from 'react';
-import { GenericCreateModal, IShaDataTableProps, IToolbarItem, SimpleIndexPage } from '@shesha/reactjs';
+import React, { useRef, useState } from 'react';
+import {
+  GenericCreateModal,
+  IShaDataTableProps,
+  IToolbarItem,
+  PageWithLayout,
+  SimpleIndexPageDefault,
+} from '@shesha/reactjs';
 import { useReportingReportCreate, useReportingReportDelete } from 'apis/reportingReport';
 import createReportMarkup from './createReportMarkup.json';
 
@@ -52,7 +58,7 @@ export interface IReportingReportProps {
   useFormPath?: boolean;
 }
 
-export const AllReportsPage: FC<IReportingReportProps> = ({
+export const AllReportsPage: PageWithLayout<IReportingReportProps> = ({
   tableConfigId = 'ReportingReport_Index',
   reportsDetailsPageUrl = '/reports/details',
   reportEditPageUrl = '/reports/edit',
@@ -131,7 +137,13 @@ export const AllReportsPage: FC<IReportingReportProps> = ({
 
   return (
     <>
-      <SimpleIndexPage title="All Reports" tableConfigId={tableConfigId} toolbarItems={toolbarItems} {...tableProps} />
+      <SimpleIndexPageDefault
+        tableRef={tableRef}
+        title="All Reports"
+        tableConfigId={tableConfigId}
+        toolbarItems={toolbarItems}
+        {...tableProps}
+      />
 
       <GenericCreateModal
         title="Create New Report"

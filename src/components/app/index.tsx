@@ -1,5 +1,5 @@
 import React, { FC, PropsWithChildren } from 'react';
-import { ShaApplicationProvider, SidebarMenuDefaultsProvider } from '@shesha/reactjs';
+import { MetadataDispatcherProvider, ShaApplicationProvider, SidebarMenuDefaultsProvider } from '@shesha/reactjs';
 import AuthContainer from 'components/authedContainer';
 
 const DEFAULT_ROUTER = {
@@ -22,11 +22,23 @@ const DEFAULT_ROUTER = {
 };
 
 export const StoryApp: FC<PropsWithChildren<any>> = ({ children }) => {
+  const renderChildren = () => {
+    try {
+      const getLayout = (children as Array<any>)[0]?.type?.getLayout;
+
+      return typeof getLayout === 'function' ? getLayout(children) : children;
+    } catch (error) {
+      return children;
+    }
+  };
+
   return (
     <ShaApplicationProvider backendUrl={process.env.STORYBOOK_BASE_URL || ''} router={DEFAULT_ROUTER as any}>
-      <AuthContainer layout>
-        <SidebarMenuDefaultsProvider items={[]}>{children}</SidebarMenuDefaultsProvider>
-      </AuthContainer>
+      <MetadataDispatcherProvider>
+        <AuthContainer layout>
+          <SidebarMenuDefaultsProvider items={[]}>{renderChildren()}</SidebarMenuDefaultsProvider>
+        </AuthContainer>
+      </MetadataDispatcherProvider>
     </ShaApplicationProvider>
   );
 };

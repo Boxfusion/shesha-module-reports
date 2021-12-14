@@ -70,6 +70,7 @@
     "@rollup/plugin-multi-entry": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-url": "^6.1.0",
+    "@shesha/reactjs": "^0.4.15",
     "@storybook/addon-actions": "^6.3.12",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-links": "^6.3.12",
@@ -163,7 +164,6 @@
   "dependencies": {
     "@devexpress/analytics-core": "^20.2.4",
     "@microsoft/signalr": "^5.0.11",
-    "@shesha/reactjs": "^0.3.27",
     "@use-it/interval": "^1.0.0",
     "axios": "^0.21.4",
     "classnames": "^2.3.1",
@@ -176,6 +176,7 @@
     "prop-types": "^15.7.2",
     "qs": "^6.10.1",
     "react-awesome-query-builder": "^3.0.0",
+    "react-error-boundary": "",
     "react-router-dom": "^6.0.2",
     "react-sortablejs": "^6.0.0",
     "react-use": "^17.3.1",
