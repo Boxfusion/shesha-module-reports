@@ -10,6 +10,7 @@ import { Modal } from 'antd';
 import React, { useRef, useState } from 'react';
 import {
   GenericCreateModal,
+  getDefaultLayout,
   IShaDataTableProps,
   IToolbarItem,
   PageWithLayout,
@@ -157,5 +158,7 @@ export const AllReportsPage: PageWithLayout<IReportingReportProps> = ({
     </>
   );
 };
+
+AllReportsPage.getLayout = getDefaultLayout;
 
 export default AllReportsPage;

@@ -41,12 +41,13 @@
     "deploy": "gh-pages -d styleguide",
     "generate-fetcher": "restful-react import --config restful-react.config.js",
     "postgenerate-fetcher": "prettier ./src/apis/*.tsx --write",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "start-storybook -p 3050",
     "build-storybook": "build-storybook",
     "commit": "cz"
   },
   "peerDependencies": {
     "@ant-design/icons": "^4.5.0",
+    "@shesha/reactjs": "^0.4.23",
     "antd": "^4.13.0",
     "lodash": "^4.17.21",
     "react": "^17.x",
