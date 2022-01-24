@@ -2,7 +2,7 @@
   "name": "@shesha/module-reports",
   "description": "shesha reactjs module for reporting capabilities",
   "author": "Boxfusion",
-  "version": "0.2.4-canary",
+  "version": "0.2.51-canary",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -48,6 +48,7 @@
   },
   "peerDependencies": {
     "@ant-design/icons": "^4.5.0",
+    "@shesha/reactjs": "^0.4.45",
     "antd": "^4.13.0",
     "lodash": "^4.17.21",
     "react": "^17.x",
@@ -71,6 +72,7 @@
     "@rollup/plugin-multi-entry": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-url": "^6.1.0",
+    "@shesha/reactjs": "^0.4.45",
     "@storybook/addon-actions": "^6.3.12",
     "@storybook/addon-essentials": "^6.3.12",
     "@storybook/addon-links": "^6.3.12",
@@ -165,7 +167,6 @@
   "dependencies": {
     "@devexpress/analytics-core": "^20.2.4",
     "@microsoft/signalr": "^5.0.11",
-    "@shesha/reactjs": "^0.4.45",
     "@use-it/interval": "^1.0.0",
     "axios": "^0.21.4",
     "classnames": "^2.3.1",
