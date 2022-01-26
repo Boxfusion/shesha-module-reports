@@ -161,8 +161,9 @@ export const ReportDetailsPage: PageWithLayout<IReportingReportDetailsProps> = (
         ]}
         onDataLoaded={onDataLoaded}
         fetcher={useReportingReportGet}
-        markup={detailsFormPath ? undefined : (pageFormMarkup as any)}
-        formPath="/reports/details"
+        // formPath="/reports/details"
+        formPath={detailsFormPath || undefined}
+        markup={pageFormMarkup as any}
         formSections={{
           reportingReportsChildTable: () => (
             <DataTableProvider tableId="ReportingReportParameter_ChildTable_Index" parentEntityId={id}>
