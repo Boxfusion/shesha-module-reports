@@ -30,7 +30,7 @@ export const ReportsDefinitionsPage: PageWithLayout<IReportsDefinitionsPageProps
     refetch();
   }, [refetch]);
 
-  const allReportingReports = data?.result?.items;
+  const allReportingReports = data?.result?.items?.filter(({ showInReportsMenu }) => showInReportsMenu);
 
   const result = _.chunk(
     _.chain(allReportingReports)
@@ -77,7 +77,7 @@ export const ReportsDefinitionsPage: PageWithLayout<IReportsDefinitionsPageProps
                         <SectionSeparator sectionName={name} />
                       </h2>
                     }
-                    dataSource={reports?.filter(({ showInReportsMenu }) => showInReportsMenu)}
+                    dataSource={reports}
                     bordered={false}
                     renderItem={({ id, displayName, description }: any) => (
                       <List.Item key={nanoid()}>
