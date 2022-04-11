@@ -1,7 +1,7 @@
 /* eslint-disable import/no-duplicates */
 import ko from 'knockout';
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
-import { AsyncExportApproach, JSReportViewer } from 'devexpress-reporting/dx-webdocumentviewer';
+import { JSReportViewer, PreviewElements } from 'devexpress-reporting/dx-webdocumentviewer';
 import { Button, Drawer } from 'antd';
 import { FilterOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
@@ -45,9 +45,12 @@ export const ReportViewerPartial: FC<IReportViewerPartialProps> = ({ id, paramet
 
   const callbacks = useMemo(() => {
     return {
+      CustomizeElements(_: any, e: any) {
+        const panelPart = e.GetById(PreviewElements.RightPanel);
+        const index = e.Elements.indexOf(panelPart);
+        e.Elements.splice(index, 1);
+      },
       BeforeRender(s: JSReportViewer) {
-        AsyncExportApproach(true);
-
         reportDesignerBindingRef.current = s;
       },
     };
@@ -100,7 +103,7 @@ export const ReportViewerPartial: FC<IReportViewerPartialProps> = ({ id, paramet
   const onApply = (params: IAnyObject) => {
     hideDrawer();
 
-    clearPreviousFilters();
+    // clearPreviousFilters();
 
     const binding = reportDesignerBindingRef?.current;
 
