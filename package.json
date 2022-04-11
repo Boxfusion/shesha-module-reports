@@ -166,7 +166,7 @@
   "dependencies": {
     "@devexpress/analytics-core": "^20.2.4",
     "@microsoft/signalr": "^5.0.11",
-    "@shesha/reactjs": "^0.4.45",
+    "@shesha/reactjs": "^0.9.3",
     "@use-it/interval": "^1.0.0",
     "axios": "^0.21.4",
     "classnames": "^2.3.1",
